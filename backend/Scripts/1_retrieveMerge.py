@@ -13,7 +13,7 @@ import re
 from datetime import datetime
 from dateutil import parser
 
-remUnit = __import__('3_removeUnits_py3')
+remUnit = __import__('3_removeUnits')
 remUnits = remUnit.remUnits
 
 # global definition for browser and its settings

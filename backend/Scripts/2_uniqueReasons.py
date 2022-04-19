@@ -9,7 +9,7 @@ import os
 from Levenshtein import *
 import codecs
 
-remUnit = __import__('3_removeUnits_py3')
+remUnit = __import__('3_removeUnits')
 remUnits = remUnit.remUnits
 
 #define locations
