@@ -55,7 +55,11 @@ def initProg(startDate, endDate):
 
     # create soup of html to look over
     url = "http://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRES/res.cfm?"+query
-    mech.open(url)
+    # print(url)
+    try:
+        mech.open(url)
+    except:
+        mech.open(url[:-15]) #remove "&sortcolumn=cda" condition to avoid connection error
     checkSoup = BeautifulSoup(mech.response().read(), features="html5lib")
 
     # find the table
@@ -355,7 +359,7 @@ def getData(startYear, startMonth, endYear, endMonth):
 if __name__ == "__main__":
     basepath = './../Original_Data'
     os.chdir(basepath)
-    for Year in range(2007, 2021):
+    for Year in [2013,2012,2011,2009,2008,2007,2014,2015,2016,2017,2018,2019,2020,2021]:#range(2007, 2021):
         print(Year)
         startYear = Year
         endYear = Year
