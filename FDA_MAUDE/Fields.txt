@@ -1,0 +1,71 @@
+https://www.fda.gov/medical-devices/mandatory-reporting-requirements-manufacturers-importers-and-device-user-facilities/about-manufacturer-and-user-facility-device-experience-maude
+
+MDRFOI Fields:
+
+1. MDR Report Key
+3. Report Number
+4. Report Source Code
+P = Voluntary report
+U = User Facility report
+D = Distributor report
+M = Manufacturer report
+6. Number Devices in Event (if source code is ‘P’, field will be null)
+7. Number Patient in Event (if source code is ‘P’, field will be null)
+8. Date Received
+9. Adverse Event Flag (B1)
+10. Product Problem Flag (B1)
+11. Date Report (B4)
+12. Date of Event (B3) -- new added, 2006
+14. Reporter Occupation Code (E3) -- new added, 2006
+15. Health Professional (E2)
+16. Initial Report to FDA (E4)
+17. Date Facility Aware (F6)
+18. Report Date (F8)
+19. Report to FDA (F11)
+20. Date Report to FDA (F11)
+21. Event Location (F12)
+22. Date Report to Manufacturer (F13)
+51. Device Date Of Manufacture (H4)
+53. Remedial Action (H7) -- multiple source type, separate by ‘,’
+55. Removal/Correction Number (H9)
+56. Event type (H1) -- only relevant for report sourcetype ‘M’
+64. Report to Manufacturer (F13)
+65. Manufacturer Name (F14)
+74. Type of Report (F7) !multiple submission type, separate by ‘,’
+75. Source Type (G3) -- multiple source type, separate by ‘,’
+76. Date Added
+77. Date Changed
+81. Summary Report
+
+
+DEVICE Fields:
+
+1. MDR Report Key
+2. Device Event key
+3. Implant Flag -- D6, new added; 2006
+4. Date Removed Flag -- D7, new added; 2006; if flag in M or Y, print Date
+5. Device Sequence No -- from device report table
+6. Date Received (from mdr_document table)
+7. Brand Name (D1)
+8. Generic Name (D2)
+9. Manufacturer Name (D3)
+18. Expiration Date of Device (D4)
+19. Model Number (D4)
+20. Catalog Number (D4)
+22. Other ID Number (D4)
+23. Device Operator (D5)
+24. Device Availability (D10)
+25. Date Returned to Manufacturer (D10)
+26. Device Report Product Code
+27. Device Age (F9)
+28. Device Evaluated by Manufacturer (H3)
+29. Baseline brand name
+30. Baseline generic name
+31. Baseline model no
+37. Baseline PMA flag
+38. Baseline PMA no
+39. Baseline 510(k) flag
+40. Baseline 510(k) no
+43. Baseline 510(k exempt flag
+44. Baseline date) first marketed
+45. Baseline date ceased marketing
