@@ -6,8 +6,3 @@ FDA Recalls: https://github.com/homa-alem/MedSafe_Backend
 
 FDA Adverse Events: https://github.com/homa-alem/MedSafe_MAUDE 
 
-Environment setup
-```
-pip install -r requirements_pythonx.txt #replace pythonx with python2 or python3 
-```
-
