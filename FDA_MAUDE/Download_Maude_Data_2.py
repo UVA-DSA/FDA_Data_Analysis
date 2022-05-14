@@ -146,7 +146,7 @@ def FOIDEVExtract2(FOIDEV_files, FOIDEV_Field_Numbers, device_name, device_codes
 
 def Get_Other_Fields(MDR_Link):
     # Open each MDR Link
-    time.sleep(0.25)
+    time.sleep(0.5)
     result = urllib2.urlopen(MDR_Link)
     soup = BeautifulSoup.BeautifulSoup(result)
     
@@ -364,10 +364,10 @@ def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Number
                         Brand_Name = device_MDR_Hash[MDR_Key][6]
                         Generic_Name = device_MDR_Hash[MDR_Key][7]
                         Product_Code = device_MDR_Hash[MDR_Key][25]
-                        print Manufacturer
-                        print Brand_Name
-                        print Generic_Name
-                        print Product_Code                    
+                        print (Manufacturer)
+                        print (Brand_Name)
+                        print (Generic_Name)
+                        print (Product_Code)                    
                         csv_wr.writerow([MDR_Link, MDR_Key, Event, Narrative, Event_Type, Patient_Outcome,
                                          Manufacture_Year, Event_Year, ReportMan_Year, ReportMade_Year, Report_Year, Time_to_Event, Time_to_Report,
                                          Manufacturer, Brand_Name, Generic_Name, Product_Code])
@@ -421,9 +421,9 @@ MDRFOI_files = ['mdrfoithru'+str(current_year-1),'mdrfoi','mdrfoichange']
 #             print("File {} not exist!".format(filename))
 
 
-####### Extract FOIDEV files for the device of interest
-FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name[0], device_keywords[0], data_dir)
-#FOIDEVExtract2(FOIDEV_files, FOIDEV_Field_Numbers, device_name[2], ['MHX'], data_dir)
+# ####### Extract FOIDEV files for the device of interest
+# FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name[0], device_keywords[0], data_dir)
+# #FOIDEVExtract2(FOIDEV_files, FOIDEV_Field_Numbers, device_name[2], ['MHX'], data_dir)
 
 
 ####### Cross-match the MDRFOI and FOIDEV records 
