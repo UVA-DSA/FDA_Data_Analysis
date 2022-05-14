@@ -1,0 +1,5 @@
+BeautifulSoup
+nltk==3.4.5
+xlrd
+xlwt
+python-dateutil>=2.8.2
