@@ -363,7 +363,7 @@ def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Number
                         Manufacturer = device_MDR_Hash[MDR_Key][8]
                         Brand_Name = device_MDR_Hash[MDR_Key][6]
                         Generic_Name = device_MDR_Hash[MDR_Key][7]
-                        Product_Code = device_MDR_Hash[MDR_Key][25]
+                        Product_Code = device_MDR_Hash[MDR_Key][16]
                         print (Manufacturer)
                         print (Brand_Name)
                         print (Generic_Name)
@@ -411,9 +411,9 @@ MDRFOI_files = ['mdrfoithru'+str(current_year-1),'mdrfoi','mdrfoichange']
 
 # ####### change filenames 
 # for devfile in FOIDEV_files:
-#     filename = devfile + '.txt'
+#     filename = data_dir + devfile + '.txt'
 #     if os.path.isfile(filename) != True:
-#         filename_CAP = devfile.upper()+'.txt'
+#         filename_CAP = data_dir + devfile.upper()+'.txt'
 #         if os.path.isfile(filename_CAP) == True:
 #             cmd = 'mv ' + filename_CAP + ' ' + filename
 #             os.system(cmd)
