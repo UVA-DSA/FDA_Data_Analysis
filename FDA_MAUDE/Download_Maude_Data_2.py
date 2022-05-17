@@ -29,6 +29,9 @@ def FieldExtract(line, field_numbers):
     extracted = []
     for f in field_numbers:
         #Remove spaces at the beginning and at the end of the string:
+        if f>len(fields):
+            # print()
+            return -1 # error
         extracted.append(fields[f-1].strip()) 
     #print extracted
     return extracted
@@ -84,7 +87,10 @@ def FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name, device_keywor
                         MDR_Key = line.split('|')[0]
                         if (not device_MDR_Hash.has_key(MDR_Key)):
                             #print MDR_Key                                     
-                            FOIDEV_Fields = FieldExtract(line, FOIDEV_Field_Numbers)  						
+                            FOIDEV_Fields = FieldExtract(line, FOIDEV_Field_Numbers)  
+                            if FOIDEV_Fields == -1:
+                                print("file format error for MDR_Key:{},{}".format(MDR_Key,line))
+                                break
                             device_MDR_Hash[MDR_Key] = FOIDEV_Fields
                             foidev_count = foidev_count+1
                             #print foidev_count                            
@@ -157,7 +163,7 @@ def Get_Other_Fields(MDR_Link):
     Narrative = ''
     for st in soup.findAll('strong'):
         # Patient Outcome
-        if (st.string.count('Patient Outcome') > 0):
+        if (st.string.count('Patient Problem') > 0): #change 'Outcome' to 'Problem'
             if (st.next.next != ''):
                 Raw_Outcome = st.next.next                
                 Patient_Outcome = regex.sub('', Raw_Outcome).strip().encode('ascii','ignore').replace("&nbsp", "")
@@ -189,7 +195,7 @@ def Get_Other_Fields(MDR_Link):
                 break
     return [Patient_Outcome, Event, Narrative]
             
-def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Numbers,
+def MAUDE_Merge_Tables(start_year,end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Numbers,
                        MDRFOI_Field_Numbers, device_name, data_dir):
     # os.chdir(data_dir)
     MAUDE_Keys = []
@@ -260,6 +266,7 @@ def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Number
 
             # For each file, read Each Line and Cross-Match it to FOIDEV    
             for line in mdrfoi_file:
+                # print(line)
                 MDRFOI_fields = FieldExtract(line, MDRFOI_Field_Numbers)
                 MDR_Key = MDRFOI_fields[0]
                 Event_Type = MDRFOI_fields[MDRFOI_titles.index('EVENT_TYPE')]
@@ -283,11 +290,11 @@ def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Number
                         Report_Year = 'N/A'
 
                     # Only if the report year is before the end year
-                    if (int(Report_Year) <= end_year):                       
+                    if (start_year<= int(Report_Year) <= end_year):                       
                         # Get the rest of the fields from online records
                         MDR_Link = 'http://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfMAUDE/Detail.cfm?MDRFOI__ID='+MDR_Key
                         print (str(curr_row)+'='+MDR_Key+'\n')
-                        [Patient_Outcome, Event, Narrative] = Get_Other_Fields(MDR_Link)
+                        [Patient_Outcome, Event, Narrative] = ['N/A','N/A','N/A']#Get_Other_Fields(MDR_Link)
                         MDR_HLink = 'HYPERLINK("'+MDR_Link+'""'+MDR_Link+'")'
 
                         # Correct the EVENT Type
@@ -387,14 +394,17 @@ def MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Number
 FOIDEV_Field_Numbers = [1,2,3,4,5,6,7,8,9,18,19,20,22,23,24,25,26,27,28]#,29,30,31,37,38,39,40,43,44,45]
 MDRFOI_Field_Numbers = [1,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,51,53,55,56,64,65,74,75,76,77,81]
 # Years
-start_year = 2000
+start_year = 2012
 current_year = 2022
 end_year = 2021 
 # Device of Interest
-device_name = ['daVinci','pacemaker','patient_monitor']
+device_name = ['daVinci','pacemaker','inslulinpump','CGM']
 # Device Keywords
 device_keywords = [['da vinci', 'davinci', 'davency', 'davincy', 'davincy',
-                    'intuitive surgical', 'intuitivesurgical'],['pacemaker']]
+                    'intuitive surgical', 'intuitivesurgical'],
+                    ['pacemaker'],
+                    ['insulin pump', 'minimed', 'tandem', 'omnipod'],
+                    ['glucose monitor', 'dexcom','cgm']] #'medtronic', 'artificial pancreas'
 # Data Directory
 data_dir = './data/'
 
@@ -402,14 +412,14 @@ data_dir = './data/'
 FOIDEV_files = []
 for years in range(start_year,current_year):               
     FOIDEV_files.append('device'+str(years)) #changed from foidev to device by xugui on MAy 13 2022
-FOIDEV_files = FOIDEV_files + ['foidevchange','foidev']
+FOIDEV_files = FOIDEV_files + ['devicechange','device'] # ['foidevchange','foidev']
 ####### Generate the MDRFOI Filenames
 MDRFOI_files = ['mdrfoithru'+str(current_year-1),'mdrfoi','mdrfoichange']
 
-# ####### Download Maude Data
+####### Download Maude Data
 # MAUDE_Download(FOIDEV_files, MDRFOI_files, data_dir)
 
-# ####### change filenames 
+####### change filenames 
 # for devfile in FOIDEV_files:
 #     filename = data_dir + devfile + '.txt'
 #     if os.path.isfile(filename) != True:
@@ -421,15 +431,19 @@ MDRFOI_files = ['mdrfoithru'+str(current_year-1),'mdrfoi','mdrfoichange']
 #             print("File {} not exist!".format(filename))
 
 
-# ####### Extract FOIDEV files for the device of interest
+####### Extract FOIDEV files for the device of interest
 # FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name[0], device_keywords[0], data_dir)
-# #FOIDEVExtract2(FOIDEV_files, FOIDEV_Field_Numbers, device_name[2], ['MHX'], data_dir)
+# FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name[2], device_keywords[2], data_dir)
+# FOIDEVExtract(FOIDEV_files, FOIDEV_Field_Numbers, device_name[3], device_keywords[3], data_dir)
+
+#FOIDEVExtract2(FOIDEV_files, FOIDEV_Field_Numbers, device_name[2], ['MHX'], data_dir)
 
 
 ####### Cross-match the MDRFOI and FOIDEV records 
-AllCounts = MAUDE_Merge_Tables(end_year, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Numbers,
-                   MDRFOI_Field_Numbers, device_name[0], data_dir)
-print("AllCounts=",AllCounts)
+AllCounts = MAUDE_Merge_Tables(2012,2022, FOIDEV_files, MDRFOI_files, FOIDEV_Field_Numbers,
+                   MDRFOI_Field_Numbers, device_name[2], data_dir)
+
+# print("AllCounts=",AllCounts)
 print('\n')
 print('Check the reports that are not from intuitive to make sure they are related to da Vinci')
 print('The report 2222833 is manually added in order to compare with cardiac surgery records')
