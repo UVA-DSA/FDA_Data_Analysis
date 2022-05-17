@@ -7,7 +7,10 @@ FDA Recalls: https://github.com/homa-alem/MedSafe_Backend
 FDA Adverse Events: https://github.com/homa-alem/MedSafe_MAUDE 
 
 For more details please refer to the following publications:
-[1] "Analysis of Safety-Critical Computer Failures in Medical Devices": http://faculty.virginia.edu/alemzadeh/papers/Alemzadeh_IEEES&P_2013.pdf
-[2] "Automated Classification of Computer-based Medical Device Recalls: An Application of Natural Language Processing and Statistical Learning": http://faculty.virginia.edu/alemzadeh/papers/CBMS_14.pdf
+
+[1] "Analysis of Safety-Critical Computer Failures in Medical Devices": https://homa-alem.github.io/papers/Alemzadeh_IEEES&P_2013.pdf
+
+[2] "Automated Classification of Computer-based Medical Device Recalls: An Application of Natural Language Processing and Statistical Learning": https://homa-alem.github.io/papers/CBMS_14.pdf
+
 [3] “Adverse Events in Robotic Surgery: A Retrospective Study of 14 Years of FDA Data,” Avialable at: http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0151470
 
